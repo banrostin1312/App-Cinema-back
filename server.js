@@ -2,7 +2,9 @@ const express = require("express");
 const morgan = require("morgan");
 const router = require('./src/routes');
 const movieServices = require("./src/services/movieServices");
-const frontApi = process.env.FRONTEND_URL || 'https://app-cinema-back.onrender.com';
+const frontApi = window.location.hostname === "localhost" || window.location.hostname === '127.0.0.1'?
+'http://localhost:3000/movies':'https://app-cinema-back.onrender.com'
+
 const app = express();
 app.use(express.json());
 app.use(morgan("dev"));
