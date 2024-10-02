@@ -2,20 +2,12 @@ const express = require("express");
 const morgan = require("morgan");
 const router = require('./src/routes');
 const movieServices = require("./src/services/movieServices");
-
-const allowedOrigins = [
-  'http://localhost:5500', // URL de desarrollo
-  'https://app-cinema-back.onrender.com', // URL de producción (ajusta esto según tu configuración)
-  // Agrega otras URLs si es necesario
-];
+const frontApi = process.env.FRONTEND_URL || "*";
 const app = express();
 app.use(express.json());
 app.use(morgan("dev"));
 app.use((req, res, next) => {
-  const origin = req.headers.origin;
-  if (allowedOrigins.includes(origin)) {
-      res.header('Access-Control-Allow-Origin', origin);
-  }
+    res.header('Access-Control-Allow-Origin', frontApi);
     res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
     res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
     next();
