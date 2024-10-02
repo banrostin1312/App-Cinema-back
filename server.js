@@ -2,12 +2,19 @@ const express = require("express");
 const morgan = require("morgan");
 const router = require('./src/routes');
 const movieServices = require("./src/services/movieServices");
-const frontApi = process.env.FRONTEND_URL || "*";
+const allowedOrigins = [
+  process.env.FRONTEND_URL, 
+  "https://app-cinema-front-1yjffgi0p-andresrs-projects.vercel.app"
+];
+
 const app = express();
 app.use(express.json());
 app.use(morgan("dev"));
 app.use((req, res, next) => {
-    res.header('Access-Control-Allow-Origin', frontApi);
+  const origin = req.headers.origin;
+  if (allowedOrigins.includes(origin)) {
+      res.header('Access-Control-Allow-Origin', origin);
+  }
     res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
     res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
     next();
